@@ -1,5 +1,5 @@
 ﻿using System;
-using Hash.HashFuncktions;
+using Hash.HashFunctions;
 
 namespace Hash
 {

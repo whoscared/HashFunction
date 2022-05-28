@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hash.HashFuncktions
+namespace Hash.HashFunctions
 {
     class HashWithList
     {
