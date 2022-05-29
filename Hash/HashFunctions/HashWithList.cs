@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System;
 
 namespace Hash.HashFunctions
 {
@@ -10,10 +7,6 @@ namespace Hash.HashFunctions
     {
         readonly List<string>[] hashTable;
         readonly int Count;
-
-        private int first = 0;
-        private int dicplacement = 0;
-        //private int last = 255;
 
         public HashWithList (int count)
         {
@@ -24,61 +17,94 @@ namespace Hash.HashFunctions
                 hashTable[i] = new List<string>();
             }
         }
-
-        public void SetValues(int first)
+        public HashWithList()
         {
-            this.first = first;
-            dicplacement = -first;
-            //this.last = last;
-        }
-
-        public string SearchString(string name)
-        {
-            int index = HashCode(name);
-            index += dicplacement;
-            for (int i = 0; i < hashTable[index].Count; i++)
+            Count = 1024;
+            hashTable = new List<string>[Count];
+            for (int i = 0; i < Count; i++)
             {
-                if (hashTable[index][i] == name)
-                    return $"{name}+{index}";
+                hashTable[i] = new List<string>();
             }
-            return "Слово отсутствует!";
         }
-        public bool DeleteValue(string name)
+
+        public void ConsoleWrite()
         {
-            int index = HashCode(name);
-            index += dicplacement;
-            for (int i = 0; i < hashTable[index].Count; i++)
+            for (int i = 0; i < Count; i++)
             {
-                if (hashTable[index][i] == name)
-                {
-                    hashTable[index].RemoveAt(i);
-                    return true;
+                if (hashTable[i].Count != 0) {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("hash: " + i+ "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("word: ");
+                    for (int j = 0; j < hashTable[i].Count; j++)
+                    {
+                        Console.WriteLine(hashTable[i][j]);
+                    }
                 }
             }
-            return false;
-        }
-        public void AddValue(string name)
-        {
-            int index = HashCode(name);
-            index += dicplacement;
-            hashTable[index].Add(name);
         }
 
-        public void MakeHashTable(string[] array)
+        public string Search(string name)
+        {
+            int index = HashCode(name);
+            if (index != -1)
+            {
+                for (int i = 0; i < hashTable[index].Count; i++)
+                {
+                    if (hashTable[index][i] == name)
+                        return $"{name} hash: {index}";
+                }
+            }
+            return "Error";
+        }
+        public string Delete(string name)
+        {
+            int index = HashCode(name);
+            if (index != -1)
+            {
+                for (int i = 0; i < hashTable[index].Count; i++)
+                {
+                    if (hashTable[index][i] == name)
+                    {
+                        hashTable[index].RemoveAt(i);
+                        return "Done!";
+                    }
+                }
+            }
+            return "Error";
+        }
+        public string Add(string name)
+        {
+            int index = HashCode(name);
+            if (index != -1)
+            {
+                hashTable[index].Add(name);
+                return "Done!";
+            }
+            return "Error";
+        }
+        public string MakeHashTable(string[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
                 int index = HashCode(array[i]);
-                index += dicplacement;
-                hashTable[index].Add(array[i]);
+                if (index != -1)
+                {
+                    hashTable[index].Add(array[i]);
+                }
+                else
+                {
+                    return "Error";
+                }
             }
+            return "Done!";
         }
-
         public int HashCode(string name)
         {
-            int h = 0;
+            int h = -1;
             if (name.Length > 0)
             {
+                h = 0;
                 char[] current = name.ToCharArray();
                 for (int i = 0; i < name.Length; i++)
                 {
@@ -89,8 +115,6 @@ namespace Hash.HashFunctions
                 h *= -1;
             if (h > Count)
                 h %= (Count);
-            if (h < first)
-                h += first;
             return h;
         }
     }
