@@ -30,7 +30,7 @@ namespace Hash
             if (whatishash == 1)
             {
                 timer.Start();
-                HashWithArray withArray = new(Words.Length * 2);
+                HashWithArray withArray = new(Words.Length+1000);
                 withArray.MakeHashTable(Words);
                 timer.Stop();
 

@@ -41,6 +41,12 @@ namespace Hash.HashFunctions
                         Console.WriteLine(hashTable[i][j]);
                     }
                 }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(i);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
             }
         }
 
@@ -88,8 +94,9 @@ namespace Hash.HashFunctions
             for (int i = 0; i < array.Length; i++)
             {
                 int index = HashCode(array[i]);
-                if (index != -1)
+                if (index != -1 )
                 {
+                    if (hashTable[index].IndexOf(array[i]) == -1)
                     hashTable[index].Add(array[i]);
                 }
                 else
@@ -108,13 +115,11 @@ namespace Hash.HashFunctions
                 char[] current = name.ToCharArray();
                 for (int i = 0; i < name.Length; i++)
                 {
-                    h = 31 * h + current[i];
+                    h = (47 * h + current[i] * i + 9)%Count;
                 }
             }
             if (h < 0)
                 h *= -1;
-            if (h > Count)
-                h %= (Count);
             return h;
         }
     }

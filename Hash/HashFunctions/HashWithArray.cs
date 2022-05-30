@@ -41,6 +41,12 @@ namespace Hash.HashFunctions
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("word: " + HashTable[i].name);
                 }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(i);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
             }
         }
         public int HashCode (string name)
@@ -52,8 +58,7 @@ namespace Hash.HashFunctions
                 char[] current = name.ToCharArray();
                 for (int i = 0; i < current.Length; i++)
                 {
-                    int key = 999 / current[i];
-                    h = key*h+current[i];
+                    h = 31 * h + current[i];
                 }
                 if (h < 0)
                     h *= -1;
